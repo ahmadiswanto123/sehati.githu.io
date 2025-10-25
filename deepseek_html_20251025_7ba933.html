@@ -1,0 +1,2988 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaris Barang - SMAS Wijaya Kusuma</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #f59e0b;
+            --secondary-dark: #d97706;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #cbd5e1;
+            --card-bg: #ffffff;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Login Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-logo i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .login-logo h1 {
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .login-logo p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+        
+        .logo-text h1 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .nav-menu {
+            margin-top: 2rem;
+        }
+        
+        .nav-item {
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: var(--sidebar-hover);
+            border-left-color: var(--secondary);
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .nav-item.restricted {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .nav-item.restricted:hover {
+            background: transparent;
+            border-left-color: transparent;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-title h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .page-title p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Dashboard Cards */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.1) 100%);
+            z-index: 0;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .card p {
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .card-trend {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .trend-up {
+            color: var(--accent);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        /* Table Styles */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .btn-outline:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+        
+        .btn-restricted {
+            background: var(--gray-light);
+            color: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        .btn-restricted:hover {
+            background: var(--gray-light);
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        th {
+            background-color: #f8fafc;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-baik {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-rusak {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-perbaikan {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-dipinjam {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-dikembalikan {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-terlambat {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--dark);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #374151;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+        }
+        
+        /* Chart Styles */
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        .chart-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .setting-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .setting-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .setting-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .user-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .user-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .user-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+        
+        .user-role {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--light);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        /* Access Denied Message */
+        .access-denied {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+        
+        .access-denied i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--danger);
+        }
+        
+        .access-denied h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .sidebar, .header, .actions, .btn, .footer, .modal, .nav-menu, .search-box, .tab-container {
+                display: none !important;
+            }
+            
+            .main-content, .container, body {
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                background: white !important;
+            }
+            
+            .section {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                page-break-inside: avoid;
+            }
+            
+            table {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+            
+            th {
+                background-color: #f5f5f5 !important;
+                color: #333 !important;
+            }
+            
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
+            }
+            
+            .print-date {
+                display: block !important;
+                text-align: right;
+                margin-bottom: 10px;
+                font-style: italic;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .logo-text, .nav-item span {
+                display: none;
+            }
+            
+            .logo {
+                justify-content: center;
+                padding: 0 0 1.5rem;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 0.9rem 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 1rem 0;
+            }
+            
+            .logo {
+                padding: 0 1rem 1rem;
+                justify-content: flex-start;
+            }
+            
+            .logo-text, .nav-item span {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                margin-top: 0;
+            }
+            
+            .nav-item {
+                flex-shrink: 0;
+                padding: 0.5rem 1rem;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            
+            .nav-item:hover, .nav-item.active {
+                border-left: none;
+                border-bottom-color: var(--secondary);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* Notifikasi Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: var(--accent);
+        }
+        
+        .notification.error {
+            background-color: var(--danger);
+        }
+        
+        .notification.warning {
+            background-color: var(--warning);
+        }
+        
+        .notification.info {
+            background-color: var(--primary);
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--gray-light);
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Improved Form Validation */
+        .form-control.error {
+            border-color: var(--danger);
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-control.error + .error-message {
+            display: block;
+        }
+        
+        /* Print Header */
+        .print-header {
+            display: none;
+        }
+        
+        .print-date {
+            display: none;
+        }
+
+        /* Restricted Access Indicator */
+        .restricted-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--gray-light);
+            color: var(--gray);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">
+                <i class="fas fa-school"></i>
+                <h1>SMAS WIJAYA KUSUMA</h1>
+                <p>Sistem Inventaris Barang</p>
+            </div>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Masukkan username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <span id="loginBtnText">Masuk</span>
+                    <div class="spinner" id="loginSpinner" style="display: none;"></div>
+                </button>
+            </form>
+            <div class="login-footer">
+                <!-- Informasi kredensial login telah dihapus -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application (Hidden Initially) -->
+    <div class="container" id="appContainer" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-school"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>SMAS WIJAYA KUSUMA</h1>
+                    <p>Inventaris Barang</p>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-item active" data-target="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-target="inventory">
+                    <i class="fas fa-boxes"></i>
+                    <span>Barang Inventaris</span>
+                </div>
+                <div class="nav-item" data-target="borrow-return">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Peminjaman & Pengembalian</span>
+                </div>
+                <div class="nav-item restricted" data-target="settings" id="settingsNav">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </div>
+                <div class="nav-item restricted" data-target="users" id="usersNav">
+                    <i class="fas fa-users"></i>
+                    <span>Pengguna</span>
+                </div>
+                <div class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Keluar</span>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="page-title">
+                    <h2 id="pageTitle">Dashboard Inventaris</h2>
+                    <p id="pageSubtitle">Selamat datang di sistem inventaris SMAS Wijaya Kusuma</p>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="user-name" id="currentUserName">Admin</div>
+                        <div class="user-role" id="currentUserRole">Administrator</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div class="section active" id="dashboard">
+                <div class="dashboard">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <h3 id="totalItems">245</h3>
+                            <p>Total Barang</p>
+                            <div class="card-trend trend-up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12% dari bulan lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 id="goodItems">198</h3>
+                            <p>Barang Baik</p>
+                            <div class="card-trend trend-up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>5% dari bulan lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3 id="borrowedItems">32</h3>
+                            <p>Sedang Dipinjam</p>
+                            <div class="card-trend trend-up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>8% dari bulan lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h3 id="lateItems">5</h3>
+                            <p>Terlambat Dikembalikan</p>
+                            <div class="card-trend trend-down">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>3% dari bulan lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Statistik Inventaris</h2>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <div>
+                                <i class="fas fa-chart-pie" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                <p>Grafik Statistik Inventaris</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Section -->
+            <div class="section" id="inventory">
+                <div class="section-header">
+                    <h2 class="section-title">Daftar Inventaris Barang</h2>
+                    <div class="actions">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" placeholder="Cari barang..." id="searchInventory">
+                        </div>
+                        <button class="btn btn-primary admin-only" id="addItemBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>Tambah Barang</span>
+                        </button>
+                        <button class="btn btn-success admin-only" id="printInventoryBtn">
+                            <i class="fas fa-print"></i>
+                            <span>Cetak Daftar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="print-header" id="inventoryPrintHeader">
+                    <h2>DAFTAR INVENTARIS BARANG</h2>
+                    <p>SMAS Wijaya Kusuma</p>
+                    <div class="print-date" id="inventoryPrintDate"></div>
+                </div>
+
+                <div id="inventoryTableContainer">
+                    <table id="inventoryTable">
+                        <thead>
+                            <tr>
+                                <th>Kode Barang</th>
+                                <th>Nama Barang</th>
+                                <th>Kategori</th>
+                                <th>Lokasi</th>
+                                <th>Kondisi</th>
+                                <th>Jumlah</th>
+                                <th class="admin-only">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="inventoryEmptyState" style="display: none;">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Tidak Ada Data Barang</h3>
+                        <p>Belum ada barang yang terdaftar dalam sistem</p>
+                        <button class="btn btn-primary admin-only" id="addFirstItemBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>Tambah Barang Pertama</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Borrow & Return Section -->
+            <div class="section" id="borrow-return">
+                <div class="tab-container">
+                    <div class="tab active" data-target="borrow">Peminjaman Barang</div>
+                    <div class="tab" data-target="return">Pengembalian Barang</div>
+                    <div class="tab" data-target="borrow-history">Riwayat Peminjaman</div>
+                </div>
+
+                <!-- Peminjaman Tab -->
+                <div class="tab-content active" id="borrow">
+                    <div class="section-header">
+                        <h2 class="section-title">Form Peminjaman Barang</h2>
+                        <button class="btn btn-outline admin-only" id="printBorrowFormBtn">
+                            <i class="fas fa-print"></i>
+                            <span>Cetak Form</span>
+                        </button>
+                    </div>
+
+                    <div class="print-header" id="borrowPrintHeader">
+                        <h2>FORM PEMINJAMAN BARANG</h2>
+                        <p>SMAS Wijaya Kusuma</p>
+                        <div class="print-date" id="borrowPrintDate"></div>
+                    </div>
+
+                    <form id="borrowForm">
+                        <div class="form-group">
+                            <label for="borrowItemCode">Kode Barang</label>
+                            <div class="actions">
+                                <input type="text" id="borrowItemCode" class="form-control" placeholder="Masukkan kode barang" required>
+                                <button type="button" class="btn btn-outline" id="searchItemBtn">
+                                    <i class="fas fa-search"></i>
+                                    Cari Barang
+                                </button>
+                            </div>
+                            <div class="error-message" id="borrowItemCodeError"></div>
+                        </div>
+
+                        <div class="form-group" id="itemDetails" style="display: none;">
+                            <div class="card">
+                                <div class="card-content">
+                                    <h3>Detail Barang</h3>
+                                    <p><strong>Nama:</strong> <span id="detailItemName">-</span></p>
+                                    <p><strong>Kategori:</strong> <span id="detailItemCategory">-</span></p>
+                                    <p><strong>Lokasi:</strong> <span id="detailItemLocation">-</span></p>
+                                    <p><strong>Kondisi:</strong> <span id="detailItemCondition">-</span></p>
+                                    <p><strong>Stok Tersedia:</strong> <span id="detailItemStock">-</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="borrowerName">Nama Peminjam</label>
+                            <input type="text" id="borrowerName" class="form-control" placeholder="Masukkan nama peminjam" required>
+                            <div class="error-message" id="borrowerNameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="borrowerClass">Kelas / Jurusan</label>
+                            <input type="text" id="borrowerClass" class="form-control" placeholder="Contoh: X IPA 1" required>
+                            <div class="error-message" id="borrowerClassError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="borrowDate">Tanggal Pinjam</label>
+                            <input type="date" id="borrowDate" class="form-control" required>
+                            <div class="error-message" id="borrowDateError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="returnDate">Tanggal Kembali (Rencana)</label>
+                            <input type="date" id="returnDate" class="form-control" required>
+                            <div class="error-message" id="returnDateError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="borrowPurpose">Tujuan Peminjaman</label>
+                            <textarea id="borrowPurpose" class="form-control" rows="3" placeholder="Masukkan tujuan peminjaman" required></textarea>
+                            <div class="error-message" id="borrowPurposeError"></div>
+                        </div>
+
+                        <div class="actions">
+                            <button type="reset" class="btn btn-outline">Reset Form</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i>
+                                Proses Peminjaman
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pengembalian Tab -->
+                <div class="tab-content" id="return">
+                    <div class="section-header">
+                        <h2 class="section-title">Form Pengembalian Barang</h2>
+                        <button class="btn btn-outline admin-only" id="printReturnFormBtn">
+                            <i class="fas fa-print"></i>
+                            <span>Cetak Form</span>
+                        </button>
+                    </div>
+
+                    <div class="print-header" id="returnPrintHeader">
+                        <h2>FORM PENGEMBALIAN BARANG</h2>
+                        <p>SMAS Wijaya Kusuma</p>
+                        <div class="print-date" id="returnPrintDate"></div>
+                    </div>
+
+                    <form id="returnForm">
+                        <div class="form-group">
+                            <label for="returnBorrowCode">Kode Peminjaman</label>
+                            <div class="actions">
+                                <input type="text" id="returnBorrowCode" class="form-control" placeholder="Masukkan kode peminjaman" required>
+                                <button type="button" class="btn btn-outline" id="searchBorrowBtn">
+                                    <i class="fas fa-search"></i>
+                                    Cari Peminjaman
+                                </button>
+                            </div>
+                            <div class="error-message" id="returnBorrowCodeError"></div>
+                        </div>
+
+                        <div class="form-group" id="borrowDetails" style="display: none;">
+                            <div class="card">
+                                <div class="card-content">
+                                    <h3>Detail Peminjaman</h3>
+                                    <p><strong>Nama Peminjam:</strong> <span id="detailBorrowerName">-</span></p>
+                                    <p><strong>Kelas:</strong> <span id="detailBorrowerClass">-</span></p>
+                                    <p><strong>Barang:</strong> <span id="detailBorrowItem">-</span></p>
+                                    <p><strong>Tanggal Pinjam:</strong> <span id="detailBorrowDate">-</span></p>
+                                    <p><strong>Tanggal Kembali (Rencana):</strong> <span id="detailReturnDate">-</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="actualReturnDate">Tanggal Pengembalian (Aktual)</label>
+                            <input type="date" id="actualReturnDate" class="form-control" required>
+                            <div class="error-message" id="actualReturnDateError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="returnCondition">Kondisi Barang Saat Dikembalikan</label>
+                            <select id="returnCondition" class="form-control" required>
+                                <option value="">Pilih Kondisi</option>
+                                <option value="Baik">Baik</option>
+                                <option value="Perbaikan">Perlu Perbaikan</option>
+                                <option value="Rusak">Rusak</option>
+                            </select>
+                            <div class="error-message" id="returnConditionError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="returnNotes">Catatan Pengembalian</label>
+                            <textarea id="returnNotes" class="form-control" rows="3" placeholder="Masukkan catatan pengembalian (opsional)"></textarea>
+                        </div>
+
+                        <div class="actions">
+                            <button type="reset" class="btn btn-outline">Reset Form</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i>
+                                Proses Pengembalian
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Riwayat Peminjaman Tab -->
+                <div class="tab-content" id="borrow-history">
+                    <div class="section-header">
+                        <h2 class="section-title">Riwayat Peminjaman Barang</h2>
+                        <div class="actions">
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" placeholder="Cari riwayat..." id="searchBorrowHistory">
+                            </div>
+                            <button class="btn btn-success admin-only" id="printBorrowHistoryBtn">
+                                <i class="fas fa-print"></i>
+                                <span>Cetak Riwayat</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="print-header" id="historyPrintHeader">
+                        <h2>LAPORAN RIWAYAT PEMINJAMAN BARANG</h2>
+                        <p>SMAS Wijaya Kusuma</p>
+                        <div class="print-date" id="historyPrintDate"></div>
+                    </div>
+
+                    <div id="borrowHistoryTableContainer">
+                        <table id="borrowHistoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Kode Peminjaman</th>
+                                    <th>Nama Peminjam</th>
+                                    <th>Barang</th>
+                                    <th>Tanggal Pinjam</th>
+                                    <th>Tanggal Kembali</th>
+                                    <th>Status</th>
+                                    <th class="admin-only">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="borrowHistoryTableBody">
+                                <!-- Data akan diisi oleh JavaScript -->
+                            </tbody>
+                        </table>
+                        <div class="empty-state" id="borrowHistoryEmptyState" style="display: none;">
+                            <i class="fas fa-history"></i>
+                            <h3>Tidak Ada Riwayat Peminjaman</h3>
+                            <p>Belum ada riwayat peminjaman barang</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="section" id="settings">
+                <div class="access-denied" id="settingsAccessDenied" style="display: none;">
+                    <i class="fas fa-ban"></i>
+                    <h3>Akses Ditolak</h3>
+                    <p>Anda tidak memiliki izin untuk mengakses menu Pengaturan. Hanya Administrator yang dapat mengakses menu ini.</p>
+                    <button class="btn btn-primary" onclick="switchToSection('dashboard')">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali ke Dashboard
+                    </button>
+                </div>
+                <div id="settingsContent">
+                    <div class="section-header">
+                        <h2 class="section-title">Pengaturan Sistem</h2>
+                        <button class="btn btn-success" id="saveSettingsBtn">
+                            <i class="fas fa-save"></i>
+                            <span>Simpan Pengaturan</span>
+                        </button>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3>Pengaturan Umum</h3>
+                            <div class="setting-option">
+                                <span>Notifikasi Email</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="emailNotifications" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-option">
+                                <span>Peringatan Stok Menipis</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="lowStockAlert" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-option">
+                                <span>Mode Gelap</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="darkMode">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-card">
+                            <h3>Pengaturan Laporan</h3>
+                            <div class="setting-option">
+                                <span>Format Laporan</span>
+                                <select class="form-control" id="reportFormat" style="width: 150px;">
+                                    <option>PDF</option>
+                                    <option>Excel</option>
+                                    <option>CSV</option>
+                                </select>
+                            </div>
+                            <div class="setting-option">
+                                <span>Otomatis Backup</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="autoBackup" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-card">
+                            <h3>Informasi Sekolah</h3>
+                            <div class="form-group">
+                                <label>Nama Sekolah</label>
+                                <input type="text" class="form-control" id="schoolName" value="SMAS Wijaya Kusuma">
+                            </div>
+                            <div class="form-group">
+                                <label>Alamat</label>
+                                <input type="text" class="form-control" id="schoolAddress" value="Jl. Pendidikan No. 123, Jakarta Selatan">
+                            </div>
+                            <div class="form-group">
+                                <label>Telepon</label>
+                                <input type="text" class="form-control" id="schoolPhone" value="(021) 7654321">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div class="section" id="users">
+                <div class="access-denied" id="usersAccessDenied" style="display: none;">
+                    <i class="fas fa-ban"></i>
+                    <h3>Akses Ditolak</h3>
+                    <p>Anda tidak memiliki izin untuk mengakses menu Pengguna. Hanya Administrator yang dapat mengakses menu ini.</p>
+                    <button class="btn btn-primary" onclick="switchToSection('dashboard')">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali ke Dashboard
+                    </button>
+                </div>
+                <div id="usersContent">
+                    <div class="section-header">
+                        <h2 class="section-title">Manajemen Pengguna</h2>
+                        <button class="btn btn-primary" id="addUserBtn">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Tambah Pengguna</span>
+                        </button>
+                    </div>
+
+                    <div class="user-list" id="userList">
+                        <!-- Data pengguna akan diisi oleh JavaScript -->
+                    </div>
+                    <div class="empty-state" id="usersEmptyState" style="display: none;">
+                        <i class="fas fa-users"></i>
+                        <h3>Tidak Ada Pengguna</h3>
+                        <p>Belum ada pengguna yang terdaftar dalam sistem</p>
+                        <button class="btn btn-primary" id="addFirstUserBtn">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Tambah Pengguna Pertama</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah/Edit Barang -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Tambah Barang Inventaris</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="itemForm">
+                <input type="hidden" id="editItemId">
+                <div class="form-group">
+                    <label for="itemCode">Kode Barang</label>
+                    <input type="text" id="itemCode" class="form-control" placeholder="BK-001" required>
+                    <div class="error-message" id="itemCodeError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="itemName">Nama Barang</label>
+                    <input type="text" id="itemName" class="form-control" placeholder="Buku Matematika Kelas X" required>
+                    <div class="error-message" id="itemNameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory">Kategori</label>
+                    <select id="itemCategory" class="form-control" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="Buku Pelajaran">Buku Pelajaran</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Furnitur">Furnitur</option>
+                        <option value="Alat Olahraga">Alat Olahraga</option>
+                        <option value="Alat Laboratorium">Alat Laboratorium</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                    <div class="error-message" id="itemCategoryError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="itemLocation">Lokasi</label>
+                    <select id="itemLocation" class="form-control" required>
+                        <option value="">Pilih Lokasi</option>
+                        <!-- Kelas X -->
+                        <option value="Kelas X-1">Kelas X-1</option>
+                        <option value="Kelas X-2">Kelas X-2</option>
+                        <option value="Kelas X-3">Kelas X-3</option>
+                        <option value="Kelas X-4">Kelas X-4</option>
+                        <option value="Kelas X-5">Kelas X-5</option>
+                        <!-- Kelas XI -->
+                        <option value="Kelas XI-1">Kelas XI-1</option>
+                        <option value="Kelas XI-2">Kelas XI-2</option>
+                        <option value="Kelas XI-3">Kelas XI-3</option>
+                        <option value="Kelas XI-4">Kelas XI-4</option>
+                        <option value="Kelas XI-5">Kelas XI-5</option>
+                        <!-- Kelas XII -->
+                        <option value="Kelas XII-1">Kelas XII-1</option>
+                        <option value="Kelas XII-2">Kelas XII-2</option>
+                        <option value="Kelas XII-3">Kelas XII-3</option>
+                        <option value="Kelas XII-4">Kelas XII-4</option>
+                        <option value="Kelas XII-5">Kelas XII-5</option>
+                        <!-- Ruangan lainnya -->
+                        <option value="Ruang Tata Usaha">Ruang Tata Usaha</option>
+                        <option value="Ruang Mushola">Ruang Mushola</option>
+                        <option value="Ruang BK">Ruang BK</option>
+                        <option value="Ruang Wakasek">Ruang Wakasek</option>
+                        <option value="Ruang Kepala Sekolah">Ruang Kepala Sekolah</option>
+                        <option value="Perpustakaan">Perpustakaan</option>
+                        <option value="Lab Komputer">Lab Komputer</option>
+                        <option value="Lab IPA">Lab IPA</option>
+                        <option value="Ruang Guru">Ruang Guru</option>
+                        <option value="Gudang">Gudang</option>
+                    </select>
+                    <div class="error-message" id="itemLocationError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="itemCondition">Kondisi</label>
+                    <select id="itemCondition" class="form-control" required>
+                        <option value="">Pilih Kondisi</option>
+                        <option value="Baik">Baik</option>
+                        <option value="Perbaikan">Perlu Perbaikan</option>
+                        <option value="Rusak">Rusak</option>
+                    </select>
+                    <div class="error-message" id="itemConditionError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="itemQuantity">Jumlah</label>
+                    <input type="number" id="itemQuantity" class="form-control" min="1" placeholder="10" required>
+                    <div class="error-message" id="itemQuantityError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="itemNotes">Catatan (Opsional)</label>
+                    <textarea id="itemNotes" class="form-control" rows="3" placeholder="Tambahkan catatan jika diperlukan"></textarea>
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn btn-outline close-modal">Batal</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i>
+                        <span id="modalSubmitText">Simpan Barang</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Tambah/Edit Pengguna -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="userModalTitle">Tambah Pengguna</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label for="userName">Nama Lengkap</label>
+                    <input type="text" id="userName" class="form-control" placeholder="Masukkan nama lengkap" required>
+                    <div class="error-message" id="userNameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" class="form-control" placeholder="Masukkan email" required>
+                    <div class="error-message" id="userEmailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Peran</label>
+                    <select id="userRole" class="form-control" required>
+                        <option value="">Pilih Peran</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Operator">Operator</option>
+                        <option value="Guru">Guru</option>
+                        <option value="Staff">Staff</option>
+                    </select>
+                    <div class="error-message" id="userRoleError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="userUsername">Username</label>
+                    <input type="text" id="userUsername" class="form-control" placeholder="Masukkan username" required>
+                    <div class="error-message" id="userUsernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword" class="form-control" placeholder="Masukkan password" required>
+                    <div class="error-message" id="userPasswordError"></div>
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn btn-outline close-modal">Batal</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i>
+                        <span id="userModalSubmitText">Simpan Pengguna</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <script>
+        // Data aplikasi
+        let currentUser = null;
+        let inventoryData = [
+            { id: 1, code: "BK-001", name: "Buku Matematika Kelas X", category: "Buku Pelajaran", location: "Kelas X-1", condition: "Baik", quantity: 50 },
+            { id: 2, code: "LK-015", name: "Laptop Acer Aspire 5", category: "Elektronik", location: "Lab Komputer", condition: "Perbaikan", quantity: 1 },
+            { id: 3, code: "PR-023", name: "Proyektor Epson", category: "Elektronik", location: "Ruang Guru", condition: "Baik", quantity: 3 },
+            { id: 4, code: "MK-008", name: "Meja Guru", category: "Furnitur", location: "Ruang Kepala Sekolah", condition: "Rusak", quantity: 2 },
+            { id: 5, code: "KR-042", name: "Kursi Siswa", category: "Furnitur", location: "Kelas X-2", condition: "Baik", quantity: 40 }
+        ];
+        
+        let usersData = [
+            { id: 1, name: "Admin", email: "admin@smawk.sch.id", role: "Administrator", username: "admin", password: "admin123" },
+            { id: 2, name: "Budi Santoso", email: "budi@smawk.sch.id", role: "Operator", username: "budi", password: "budi123" },
+            { id: 3, name: "Siti Rahayu", email: "siti@smawk.sch.id", role: "Guru", username: "siti", password: "siti123" }
+        ];
+        
+        let borrowData = [
+            { 
+                id: 1, 
+                borrowCode: "PJN-001", 
+                itemId: 1, 
+                borrowerName: "Ahmad Fauzi", 
+                borrowerClass: "X IPA 1", 
+                borrowDate: "2023-10-01", 
+                returnDate: "2023-10-08", 
+                actualReturnDate: null,
+                purpose: "Belajar untuk ulangan", 
+                status: "Dipinjam",
+                returnCondition: null,
+                returnNotes: null
+            },
+            { 
+                id: 2, 
+                borrowCode: "PJN-002", 
+                itemId: 3, 
+                borrowerName: "Sari Indah", 
+                borrowerClass: "XI IPS 2", 
+                borrowDate: "2023-10-03", 
+                returnDate: "2023-10-10", 
+                actualReturnDate: "2023-10-09",
+                purpose: "Presentasi kelompok", 
+                status: "Dikembalikan",
+                returnCondition: "Baik",
+                returnNotes: "Barang dalam kondisi baik"
+            }
+        ];
+        
+        let settingsData = {
+            emailNotifications: true,
+            lowStockAlert: true,
+            darkMode: false,
+            reportFormat: "PDF",
+            autoBackup: true,
+            schoolName: "SMAS Wijaya Kusuma",
+            schoolAddress: "Jl. Pendidikan No. 123, Jakarta Selatan",
+            schoolPhone: "(021) 7654321"
+        };
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type = 'info', duration = 5000) {
+            const notificationContainer = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            // Trigger reflow untuk memastikan animasi berjalan
+            notification.offsetWidth;
+            
+            // Tampilkan notifikasi
+            notification.classList.add('show');
+            
+            // Sembunyikan notifikasi setelah durasi tertentu
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, duration);
+        }
+
+        // Fungsi untuk validasi form
+        function validateForm(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                const errorElement = document.getElementById(`${input.id}Error`);
+                
+                if (!input.value.trim()) {
+                    input.classList.add('error');
+                    if (errorElement) {
+                        errorElement.textContent = 'Field ini wajib diisi';
+                    }
+                    isValid = false;
+                } else {
+                    input.classList.remove('error');
+                    if (errorElement) {
+                        errorElement.textContent = '';
+                    }
+                }
+                
+                // Validasi khusus untuk email
+                if (input.type === 'email' && input.value.trim()) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(input.value)) {
+                        input.classList.add('error');
+                        if (errorElement) {
+                            errorElement.textContent = 'Format email tidak valid';
+                        }
+                        isValid = false;
+                    }
+                }
+                
+                // Validasi khusus untuk tanggal
+                if (input.type === 'date' && input.value.trim()) {
+                    const selectedDate = new Date(input.value);
+                    const today = new Date();
+                    
+                    if (input.id === 'returnDate' || input.id === 'borrowDate') {
+                        if (selectedDate < today) {
+                            input.classList.add('error');
+                            if (errorElement) {
+                                errorElement.textContent = 'Tanggal tidak boleh di masa lalu';
+                            }
+                            isValid = false;
+                        }
+                    }
+                }
+            });
+            
+            return isValid;
+        }
+
+        // Fungsi untuk mengatur loading state
+        function setLoadingState(buttonId, isLoading) {
+            const button = document.getElementById(buttonId);
+            if (!button) return;
+            
+            if (isLoading) {
+                button.disabled = true;
+                if (button.querySelector('.spinner')) {
+                    button.querySelector('.spinner').style.display = 'inline-block';
+                }
+                if (button.querySelector('#loginBtnText')) {
+                    button.querySelector('#loginBtnText').textContent = 'Memproses...';
+                }
+            } else {
+                button.disabled = false;
+                if (button.querySelector('.spinner')) {
+                    button.querySelector('.spinner').style.display = 'none';
+                }
+                if (button.querySelector('#loginBtnText')) {
+                    button.querySelector('#loginBtnText').textContent = 'Masuk';
+                }
+            }
+        }
+
+        // Fungsi untuk mengatur tanggal cetak
+        function setPrintDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const formattedDate = now.toLocaleDateString('id-ID', options);
+            
+            document.getElementById('borrowPrintDate').textContent = `Dicetak pada: ${formattedDate}`;
+            document.getElementById('returnPrintDate').textContent = `Dicetak pada: ${formattedDate}`;
+            document.getElementById('historyPrintDate').textContent = `Dicetak pada: ${formattedDate}`;
+            document.getElementById('inventoryPrintDate').textContent = `Dicetak pada: ${formattedDate}`;
+        }
+
+        // Fungsi untuk mencetak form peminjaman
+        function printBorrowForm() {
+            setPrintDate();
+            window.print();
+        }
+
+        // Fungsi untuk mencetak form pengembalian
+        function printReturnForm() {
+            setPrintDate();
+            window.print();
+        }
+
+        // Fungsi untuk mencetak riwayat peminjaman
+        function printBorrowHistory() {
+            setPrintDate();
+            window.print();
+        }
+
+        // Fungsi untuk mencetak daftar inventaris
+        function printInventory() {
+            setPrintDate();
+            window.print();
+        }
+
+        // Login functionality
+        const loginScreen = document.getElementById('loginScreen');
+        const appContainer = document.getElementById('appContainer');
+        const loginForm = document.getElementById('loginForm');
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!validateForm('loginForm')) {
+                return;
+            }
+            
+            setLoadingState('loginBtn', true);
+            
+            // Simulasi proses login
+            setTimeout(() => {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Cek kredensial
+                const user = usersData.find(u => u.username === username && u.password === password);
+                
+                if (user) {
+                    currentUser = user;
+                    document.getElementById('currentUserName').textContent = user.name;
+                    document.getElementById('currentUserRole').textContent = user.role;
+                    
+                    // Sembunyikan login, tampilkan aplikasi
+                    loginScreen.style.display = 'none';
+                    appContainer.style.display = 'flex';
+                    
+                    // Atur kontrol akses berdasarkan peran
+                    setupAccessControl();
+                    
+                    // Muat data dari localStorage jika ada
+                    loadDataFromStorage();
+                    
+                    showNotification(`Selamat datang, ${user.name}!`, 'success');
+                } else {
+                    showNotification('Username atau password salah!', 'error');
+                }
+                
+                setLoadingState('loginBtn', false);
+            }, 1000);
+        });
+        
+        // Fungsi untuk mengatur kontrol akses berdasarkan peran
+        function setupAccessControl() {
+            const settingsNav = document.getElementById('settingsNav');
+            const usersNav = document.getElementById('usersNav');
+            const addItemBtn = document.getElementById('addItemBtn');
+            const printInventoryBtn = document.getElementById('printInventoryBtn');
+            const printBorrowFormBtn = document.getElementById('printBorrowFormBtn');
+            const printReturnFormBtn = document.getElementById('printReturnFormBtn');
+            const printBorrowHistoryBtn = document.getElementById('printBorrowHistoryBtn');
+            
+            // Elemen dengan class admin-only
+            const adminOnlyElements = document.querySelectorAll('.admin-only');
+            
+            // Jika bukan admin, batasi akses
+            if (currentUser.role !== 'Administrator') {
+                // Tambahkan class restricted untuk menonaktifkan menu
+                settingsNav.classList.add('restricted');
+                usersNav.classList.add('restricted');
+                
+                // Sembunyikan tombol yang tidak boleh diakses
+                addItemBtn.style.display = 'none';
+                printInventoryBtn.style.display = 'none';
+                printBorrowFormBtn.style.display = 'none';
+                printReturnFormBtn.style.display = 'none';
+                printBorrowHistoryBtn.style.display = 'none';
+                
+                // Sembunyikan semua elemen dengan class admin-only
+                adminOnlyElements.forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Sembunyikan konten dari section yang dibatasi
+                document.getElementById('settingsContent').style.display = 'none';
+                document.getElementById('usersContent').style.display = 'none';
+                
+                // Tampilkan pesan akses ditolak
+                document.getElementById('settingsAccessDenied').style.display = 'block';
+                document.getElementById('usersAccessDenied').style.display = 'block';
+            } else {
+                // Jika admin, hapus pembatasan
+                settingsNav.classList.remove('restricted');
+                usersNav.classList.remove('restricted');
+                
+                // Tampilkan tombol yang disembunyikan
+                addItemBtn.style.display = 'flex';
+                printInventoryBtn.style.display = 'flex';
+                printBorrowFormBtn.style.display = 'flex';
+                printReturnFormBtn.style.display = 'flex';
+                printBorrowHistoryBtn.style.display = 'flex';
+                
+                // Tampilkan semua elemen dengan class admin-only
+                adminOnlyElements.forEach(el => {
+                    el.style.display = 'flex';
+                });
+                
+                // Tampilkan konten section
+                document.getElementById('settingsContent').style.display = 'block';
+                document.getElementById('usersContent').style.display = 'block';
+                
+                // Sembunyikan pesan akses ditolak
+                document.getElementById('settingsAccessDenied').style.display = 'none';
+                document.getElementById('usersAccessDenied').style.display = 'none';
+            }
+        }
+        
+        // Fungsi untuk beralih ke section tertentu
+        function switchToSection(sectionId) {
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section');
+            
+            // Update active nav item
+            navItems.forEach(nav => nav.classList.remove('active'));
+            document.querySelector(`.nav-item[data-target="${sectionId}"]`).classList.add('active');
+            
+            // Show target section
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === sectionId) {
+                    section.classList.add('active');
+                }
+            });
+            
+            // Update page title and subtitle
+            const pageData = {
+                dashboard: {
+                    title: "Dashboard Inventaris",
+                    subtitle: "Selamat datang di sistem inventaris SMAS Wijaya Kusuma"
+                },
+                inventory: {
+                    title: "Manajemen Barang Inventaris",
+                    subtitle: "Kelola data barang inventaris sekolah"
+                },
+                "borrow-return": {
+                    title: "Peminjaman & Pengembalian Barang",
+                    subtitle: "Kelola peminjaman dan pengembalian barang"
+                },
+                settings: {
+                    title: "Pengaturan Sistem",
+                    subtitle: "Konfigurasi sistem inventaris"
+                },
+                users: {
+                    title: "Manajemen Pengguna",
+                    subtitle: "Kelola akses pengguna sistem"
+                }
+            };
+            
+            if (pageData[sectionId]) {
+                document.getElementById('pageTitle').textContent = pageData[sectionId].title;
+                document.getElementById('pageSubtitle').textContent = pageData[sectionId].subtitle;
+            }
+        }
+        
+        // Navigation functionality
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.section');
+        const pageTitle = document.getElementById('pageTitle');
+        const pageSubtitle = document.getElementById('pageSubtitle');
+        
+        // Page titles and subtitles for each section
+        const pageData = {
+            dashboard: {
+                title: "Dashboard Inventaris",
+                subtitle: "Selamat datang di sistem inventaris SMAS Wijaya Kusuma"
+            },
+            inventory: {
+                title: "Manajemen Barang Inventaris",
+                subtitle: "Kelola data barang inventaris sekolah"
+            },
+            "borrow-return": {
+                title: "Peminjaman & Pengembalian Barang",
+                subtitle: "Kelola peminjaman dan pengembalian barang"
+            },
+            settings: {
+                title: "Pengaturan Sistem",
+                subtitle: "Konfigurasi sistem inventaris"
+            },
+            users: {
+                title: "Manajemen Pengguna",
+                subtitle: "Kelola akses pengguna sistem"
+            }
+        };
+        
+        // Navigation event listeners
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.id === 'logoutBtn') {
+                    if (confirm('Apakah Anda yakin ingin keluar?')) {
+                        currentUser = null;
+                        appContainer.style.display = 'none';
+                        loginScreen.style.display = 'flex';
+                        loginForm.reset();
+                        showNotification('Anda telah berhasil keluar', 'info');
+                    }
+                    return;
+                }
+                
+                // Jika menu dibatasi dan user bukan admin, tampilkan pesan
+                if (item.classList.contains('restricted') && currentUser.role !== 'Administrator') {
+                    showNotification('Anda tidak memiliki izin untuk mengakses menu ini. Hanya Administrator yang dapat mengakses.', 'warning');
+                    return;
+                }
+                
+                const target = item.getAttribute('data-target');
+                
+                // Update active nav item
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Show target section
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === target) {
+                        section.classList.add('active');
+                    }
+                });
+                
+                // Update page title and subtitle
+                if (pageData[target]) {
+                    pageTitle.textContent = pageData[target].title;
+                    pageSubtitle.textContent = pageData[target].subtitle;
+                }
+            });
+        });
+        
+        // Tab functionality untuk Peminjaman & Pengembalian
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-target');
+                
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show target tab content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === target) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Modal functionality
+        const itemModal = document.getElementById('itemModal');
+        const userModal = document.getElementById('userModal');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+        const itemForm = document.getElementById('itemForm');
+        const userForm = document.getElementById('userForm');
+        const borrowForm = document.getElementById('borrowForm');
+        const returnForm = document.getElementById('returnForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubmitText = document.getElementById('modalSubmitText');
+        const userModalTitle = document.getElementById('userModalTitle');
+        const userModalSubmitText = document.getElementById('userModalSubmitText');
+        const editItemId = document.getElementById('editItemId');
+        const editUserId = document.getElementById('editUserId');
+        
+        // Open modal for adding new item
+        document.getElementById('addItemBtn').addEventListener('click', () => {
+            // Cek apakah user adalah admin
+            if (currentUser.role !== 'Administrator') {
+                showNotification('Anda tidak memiliki izin untuk menambah barang. Hanya Administrator yang dapat menambah barang.', 'warning');
+                return;
+            }
+            
+            modalTitle.textContent = "Tambah Barang Inventaris";
+            modalSubmitText.textContent = "Simpan Barang";
+            itemForm.reset();
+            editItemId.value = "";
+            itemModal.style.display = 'flex';
+        });
+        
+        // Open modal for adding new user
+        document.getElementById('addUserBtn').addEventListener('click', () => {
+            // Cek apakah user adalah admin
+            if (currentUser.role !== 'Administrator') {
+                showNotification('Anda tidak memiliki izin untuk menambah pengguna. Hanya Administrator yang dapat menambah pengguna.', 'warning');
+                return;
+            }
+            
+            userModalTitle.textContent = "Tambah Pengguna";
+            userModalSubmitText.textContent = "Simpan Pengguna";
+            userForm.reset();
+            editUserId.value = "";
+            userModal.style.display = 'flex';
+        });
+        
+        // Close modals
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                itemModal.style.display = 'none';
+                userModal.style.display = 'none';
+            });
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === itemModal) {
+                itemModal.style.display = 'none';
+            }
+            if (e.target === userModal) {
+                userModal.style.display = 'none';
+            }
+        });
+        
+        // Form submission for adding/editing items
+        itemForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!validateForm('itemForm')) {
+                return;
+            }
+            
+            // Pastikan hanya admin yang bisa menambah/mengedit barang
+            if (currentUser.role !== 'Administrator') {
+                showNotification('Anda tidak memiliki izin untuk mengelola barang. Hanya Administrator yang dapat mengelola barang.', 'warning');
+                itemModal.style.display = 'none';
+                return;
+            }
+            
+            const itemData = {
+                code: document.getElementById('itemCode').value,
+                name: document.getElementById('itemName').value,
+                category: document.getElementById('itemCategory').value,
+                location: document.getElementById('itemLocation').value,
+                condition: document.getElementById('itemCondition').value,
+                quantity: parseInt(document.getElementById('itemQuantity').value),
+                notes: document.getElementById('itemNotes').value
+            };
+            
+            if (editItemId.value) {
+                // Edit existing item
+                const itemIndex = inventoryData.findIndex(item => item.id == editItemId.value);
+                if (itemIndex !== -1) {
+                    inventoryData[itemIndex] = { ...inventoryData[itemIndex], ...itemData };
+                    showNotification('Barang berhasil diperbarui!', 'success');
+                }
+            } else {
+                // Add new item
+                const newId = inventoryData.length > 0 ? Math.max(...inventoryData.map(item => item.id)) + 1 : 1;
+                inventoryData.push({ id: newId, ...itemData });
+                showNotification('Barang berhasil ditambahkan!', 'success');
+            }
+            
+            itemModal.style.display = 'none';
+            renderInventoryTable();
+            updateDashboardStats();
+            saveDataToStorage();
+        });
+        
+        // Form submission for adding/editing users
+        userForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!validateForm('userForm')) {
+                return;
+            }
+            
+            // Pastikan hanya admin yang bisa menambah/mengedit pengguna
+            if (currentUser.role !== 'Administrator') {
+                showNotification('Anda tidak memiliki izin untuk mengelola pengguna. Hanya Administrator yang dapat mengelola pengguna.', 'warning');
+                userModal.style.display = 'none';
+                return;
+            }
+            
+            const userData = {
+                name: document.getElementById('userName').value,
+                email: document.getElementById('userEmail').value,
+                role: document.getElementById('userRole').value,
+                username: document.getElementById('userUsername').value,
+                password: document.getElementById('userPassword').value
+            };
+            
+            if (editUserId.value) {
+                // Edit existing user
+                const userIndex = usersData.findIndex(user => user.id == editUserId.value);
+                if (userIndex !== -1) {
+                    usersData[userIndex] = { ...usersData[userIndex], ...userData };
+                    showNotification('Pengguna berhasil diperbarui!', 'success');
+                }
+            } else {
+                // Add new user
+                const newId = usersData.length > 0 ? Math.max(...usersData.map(user => user.id)) + 1 : 1;
+                usersData.push({ id: newId, ...userData });
+                showNotification('Pengguna berhasil ditambahkan!', 'success');
+            }
+            
+            userModal.style.display = 'none';
+            renderUserList();
+            saveDataToStorage();
+        });
+        
+        // Form submission for borrowing items
+        borrowForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!validateForm('borrowForm')) {
+                return;
+            }
+            
+            const itemCode = document.getElementById('borrowItemCode').value;
+            const item = inventoryData.find(item => item.code === itemCode);
+            
+            if (!item) {
+                showNotification('Kode barang tidak ditemukan!', 'error');
+                return;
+            }
+            
+            if (item.quantity <= 0) {
+                showNotification('Stok barang tidak tersedia!', 'error');
+                return;
+            }
+            
+            const borrowDataItem = {
+                id: borrowData.length > 0 ? Math.max(...borrowData.map(b => b.id)) + 1 : 1,
+                borrowCode: `PJN-${String(borrowData.length + 1).padStart(3, '0')}`,
+                itemId: item.id,
+                borrowerName: document.getElementById('borrowerName').value,
+                borrowerClass: document.getElementById('borrowerClass').value,
+                borrowDate: document.getElementById('borrowDate').value,
+                returnDate: document.getElementById('returnDate').value,
+                actualReturnDate: null,
+                purpose: document.getElementById('borrowPurpose').value,
+                status: "Dipinjam",
+                returnCondition: null,
+                returnNotes: null
+            };
+            
+            // Kurangi stok barang
+            item.quantity -= 1;
+            
+            borrowData.push(borrowDataItem);
+            showNotification(`Peminjaman berhasil! Kode Peminjaman: ${borrowDataItem.borrowCode}`, 'success');
+            borrowForm.reset();
+            document.getElementById('itemDetails').style.display = 'none';
+            
+            renderInventoryTable();
+            renderBorrowHistoryTable();
+            updateDashboardStats();
+            saveDataToStorage();
+        });
+        
+        // Form submission for returning items
+        returnForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!validateForm('returnForm')) {
+                return;
+            }
+            
+            const borrowCode = document.getElementById('returnBorrowCode').value;
+            const borrowIndex = borrowData.findIndex(b => b.borrowCode === borrowCode && b.status === "Dipinjam");
+            
+            if (borrowIndex === -1) {
+                showNotification('Kode peminjaman tidak ditemukan atau barang sudah dikembalikan!', 'error');
+                return;
+            }
+            
+            const borrowItem = borrowData[borrowIndex];
+            const item = inventoryData.find(item => item.id === borrowItem.itemId);
+            
+            // Update data peminjaman
+            borrowData[borrowIndex].status = "Dikembalikan";
+            borrowData[borrowIndex].actualReturnDate = document.getElementById('actualReturnDate').value;
+            borrowData[borrowIndex].returnCondition = document.getElementById('returnCondition').value;
+            borrowData[borrowIndex].returnNotes = document.getElementById('returnNotes').value;
+            
+            // Tambah stok barang kembali
+            if (item) {
+                item.quantity += 1;
+                
+                // Update kondisi barang jika berbeda
+                if (borrowData[borrowIndex].returnCondition !== "Baik") {
+                    item.condition = borrowData[borrowIndex].returnCondition;
+                }
+            }
+            
+            showNotification('Pengembalian berhasil!', 'success');
+            returnForm.reset();
+            document.getElementById('borrowDetails').style.display = 'none';
+            
+            renderInventoryTable();
+            renderBorrowHistoryTable();
+            updateDashboardStats();
+            saveDataToStorage();
+        });
+        
+        // Search item for borrowing
+        document.getElementById('searchItemBtn').addEventListener('click', () => {
+            const itemCode = document.getElementById('borrowItemCode').value;
+            const item = inventoryData.find(item => item.code === itemCode);
+            
+            if (item) {
+                document.getElementById('detailItemName').textContent = item.name;
+                document.getElementById('detailItemCategory').textContent = item.category;
+                document.getElementById('detailItemLocation').textContent = item.location;
+                document.getElementById('detailItemCondition').textContent = item.condition;
+                document.getElementById('detailItemStock').textContent = item.quantity;
+                document.getElementById('itemDetails').style.display = 'block';
+            } else {
+                showNotification('Barang tidak ditemukan!', 'error');
+                document.getElementById('itemDetails').style.display = 'none';
+            }
+        });
+        
+        // Search borrow for returning
+        document.getElementById('searchBorrowBtn').addEventListener('click', () => {
+            const borrowCode = document.getElementById('returnBorrowCode').value;
+            const borrowItem = borrowData.find(b => b.borrowCode === borrowCode && b.status === "Dipinjam");
+            
+            if (borrowItem) {
+                const item = inventoryData.find(item => item.id === borrowItem.itemId);
+                
+                document.getElementById('detailBorrowerName').textContent = borrowItem.borrowerName;
+                document.getElementById('detailBorrowerClass').textContent = borrowItem.borrowerClass;
+                document.getElementById('detailBorrowItem').textContent = item ? item.name : 'Barang tidak ditemukan';
+                document.getElementById('detailBorrowDate').textContent = borrowItem.borrowDate;
+                document.getElementById('detailReturnDate').textContent = borrowItem.returnDate;
+                document.getElementById('borrowDetails').style.display = 'block';
+            } else {
+                showNotification('Peminjaman tidak ditemukan atau barang sudah dikembalikan!', 'error');
+                document.getElementById('borrowDetails').style.display = 'none';
+            }
+        });
+        
+        // Function to render inventory table
+        function renderInventoryTable() {
+            const tableBody = document.getElementById('inventoryTableBody');
+            const emptyState = document.getElementById('inventoryEmptyState');
+            tableBody.innerHTML = '';
+            
+            if (inventoryData.length === 0) {
+                document.getElementById('inventoryTable').style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            document.getElementById('inventoryTable').style.display = 'table';
+            emptyState.style.display = 'none';
+            
+            // Sembunyikan kolom aksi jika bukan admin
+            const isAdmin = currentUser.role === 'Administrator';
+            const actionHeader = document.querySelector('#inventoryTable th.admin-only');
+            if (actionHeader) {
+                actionHeader.style.display = isAdmin ? '' : 'none';
+            }
+            
+            inventoryData.forEach(item => {
+                const row = document.createElement('tr');
+                
+                // Determine status class
+                let statusClass = '';
+                if (item.condition === 'Baik') statusClass = 'status-baik';
+                else if (item.condition === 'Perbaikan') statusClass = 'status-perbaikan';
+                else if (item.condition === 'Rusak') statusClass = 'status-rusak';
+                
+                row.innerHTML = `
+                    <td>${item.code}</td>
+                    <td>${item.name}</td>
+                    <td>${item.category}</td>
+                    <td>${item.location}</td>
+                    <td><span class="status ${statusClass}">${item.condition}</span></td>
+                    <td>${item.quantity}</td>
+                    ${isAdmin ? `
+                    <td class="admin-only">
+                        <button class="btn btn-outline edit-item" data-id="${item.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-outline delete-item" data-id="${item.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                    ` : ''}
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Add event listeners for edit and delete buttons (hanya untuk admin)
+            if (isAdmin) {
+                document.querySelectorAll('.edit-item').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const itemId = e.currentTarget.getAttribute('data-id');
+                        editItem(itemId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-item').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const itemId = e.currentTarget.getAttribute('data-id');
+                        deleteItem(itemId);
+                    });
+                });
+            }
+        }
+        
+        // Function to edit an item
+        function editItem(itemId) {
+            const item = inventoryData.find(item => item.id == itemId);
+            if (item) {
+                modalTitle.textContent = "Edit Barang Inventaris";
+                modalSubmitText.textContent = "Update Barang";
+                
+                document.getElementById('itemCode').value = item.code;
+                document.getElementById('itemName').value = item.name;
+                document.getElementById('itemCategory').value = item.category;
+                document.getElementById('itemLocation').value = item.location;
+                document.getElementById('itemCondition').value = item.condition;
+                document.getElementById('itemQuantity').value = item.quantity;
+                document.getElementById('itemNotes').value = item.notes || '';
+                editItemId.value = item.id;
+                
+                itemModal.style.display = 'flex';
+            }
+        }
+        
+        // Function to delete an item
+        function deleteItem(itemId) {
+            if (confirm('Apakah Anda yakin ingin menghapus barang ini?')) {
+                inventoryData = inventoryData.filter(item => item.id != itemId);
+                renderInventoryTable();
+                updateDashboardStats();
+                showNotification('Barang berhasil dihapus!', 'success');
+                saveDataToStorage();
+            }
+        }
+        
+        // Function to render borrow history table
+        function renderBorrowHistoryTable() {
+            const tableBody = document.getElementById('borrowHistoryTableBody');
+            const emptyState = document.getElementById('borrowHistoryEmptyState');
+            tableBody.innerHTML = '';
+            
+            if (borrowData.length === 0) {
+                document.getElementById('borrowHistoryTable').style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            document.getElementById('borrowHistoryTable').style.display = 'table';
+            emptyState.style.display = 'none';
+            
+            // Sembunyikan kolom aksi jika bukan admin
+            const isAdmin = currentUser.role === 'Administrator';
+            const actionHeader = document.querySelector('#borrowHistoryTable th.admin-only');
+            if (actionHeader) {
+                actionHeader.style.display = isAdmin ? '' : 'none';
+            }
+            
+            borrowData.forEach(borrow => {
+                const row = document.createElement('tr');
+                const item = inventoryData.find(item => item.id === borrow.itemId);
+                
+                // Determine status class
+                let statusClass = '';
+                if (borrow.status === 'Dipinjam') statusClass = 'status-dipinjam';
+                else if (borrow.status === 'Dikembalikan') statusClass = 'status-dikembalikan';
+                
+                // Check if item is returned late
+                const today = new Date().toISOString().split('T')[0];
+                if (borrow.status === 'Dipinjam' && borrow.returnDate < today) {
+                    statusClass = 'status-terlambat';
+                }
+                
+                row.innerHTML = `
+                    <td>${borrow.borrowCode}</td>
+                    <td>${borrow.borrowerName} (${borrow.borrowerClass})</td>
+                    <td>${item ? item.name : 'Barang tidak ditemukan'}</td>
+                    <td>${borrow.borrowDate}</td>
+                    <td>${borrow.actualReturnDate || borrow.returnDate}</td>
+                    <td><span class="status ${statusClass}">${borrow.status}${statusClass === 'status-terlambat' ? ' - Terlambat' : ''}</span></td>
+                    ${isAdmin ? `
+                    <td class="admin-only">
+                        ${borrow.status === 'Dipinjam' ? `
+                            <button class="btn btn-outline quick-return" data-id="${borrow.id}">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                        ` : ''}
+                    </td>
+                    ` : ''}
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Add event listeners for quick return buttons (hanya untuk admin)
+            if (isAdmin) {
+                document.querySelectorAll('.quick-return').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const borrowId = e.currentTarget.getAttribute('data-id');
+                        quickReturn(borrowId);
+                    });
+                });
+            }
+            
+            // Search functionality for borrow history
+            document.getElementById('searchBorrowHistory').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#borrowHistoryTableBody tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+        
+        // Function for quick return
+        function quickReturn(borrowId) {
+            const borrowIndex = borrowData.findIndex(b => b.id == borrowId);
+            
+            if (borrowIndex !== -1) {
+                const borrowItem = borrowData[borrowIndex];
+                const item = inventoryData.find(item => item.id === borrowItem.itemId);
+                
+                // Update data peminjaman
+                borrowData[borrowIndex].status = "Dikembalikan";
+                borrowData[borrowIndex].actualReturnDate = new Date().toISOString().split('T')[0];
+                borrowData[borrowIndex].returnCondition = "Baik";
+                borrowData[borrowIndex].returnNotes = "Pengembalian cepat melalui riwayat";
+                
+                // Tambah stok barang kembali
+                if (item) {
+                    item.quantity += 1;
+                }
+                
+                showNotification('Pengembalian berhasil!', 'success');
+                
+                renderInventoryTable();
+                renderBorrowHistoryTable();
+                updateDashboardStats();
+                saveDataToStorage();
+            }
+        }
+        
+        // Function to render user list
+        function renderUserList() {
+            const userList = document.getElementById('userList');
+            const emptyState = document.getElementById('usersEmptyState');
+            userList.innerHTML = '';
+            
+            if (usersData.length === 0) {
+                userList.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            userList.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            usersData.forEach(user => {
+                const userCard = document.createElement('div');
+                userCard.className = 'user-card';
+                
+                // Determine avatar color based on role
+                let avatarColor = 'var(--primary)';
+                if (user.role === 'Operator') avatarColor = 'var(--accent)';
+                else if (user.role === 'Guru') avatarColor = 'var(--secondary)';
+                
+                userCard.innerHTML = `
+                    <div class="user-avatar-large" style="background: ${avatarColor};">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>${user.name}</h3>
+                    <p>${user.email}</p>
+                    <span class="user-role">${user.role}</span>
+                    <div style="margin-top: 15px;" class="admin-only">
+                        <button class="btn btn-outline edit-user" data-id="${user.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-outline delete-user" data-id="${user.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                userList.appendChild(userCard);
+            });
+            
+            // Add event listeners for edit and delete buttons (hanya untuk admin)
+            if (currentUser.role === 'Administrator') {
+                document.querySelectorAll('.edit-user').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const userId = e.currentTarget.getAttribute('data-id');
+                        editUser(userId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-user').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const userId = e.currentTarget.getAttribute('data-id');
+                        deleteUser(userId);
+                    });
+                });
+            }
+        }
+        
+        // Function to edit a user
+        function editUser(userId) {
+            // Pastikan hanya admin yang bisa mengedit pengguna
+            if (currentUser.role !== 'Administrator') {
+                showNotification('Anda tidak memiliki izin untuk mengedit pengguna. Hanya Administrator yang dapat mengedit pengguna.', 'warning');
+                return;
+            }
+            
+            const user = usersData.find(user => user.id == userId);
+            if (user) {
+                userModalTitle.textContent = "Edit Pengguna";
+                userModalSubmitText.textContent = "Update Pengguna";
+                
+                document.getElementById('userName').value = user.name;
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('userRole').value = user.role;
+                document.getElementById('userUsername').value = user.username;
+                document.getElementById('userPassword').value = user.password;
+                editUserId.value = user.id;
+                
+                userModal.style.display = 'flex';
+            }
+        }
+        
+        // Function to delete a user
+        function deleteUser(userId) {
+            // Pastikan hanya admin yang bisa menghapus pengguna
+            if (currentUser.role !== 'Administrator') {
+                showNotification('Anda tidak memiliki izin untuk menghapus pengguna. Hanya Administrator yang dapat menghapus pengguna.', 'warning');
+                return;
+            }
+            
+            if (confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) {
+                // Prevent deleting the current user
+                if (currentUser && currentUser.id == userId) {
+                    showNotification('Tidak dapat menghapus pengguna yang sedang aktif!', 'error');
+                    return;
+                }
+                
+                usersData = usersData.filter(user => user.id != userId);
+                renderUserList();
+                showNotification('Pengguna berhasil dihapus!', 'success');
+                saveDataToStorage();
+            }
+        }
+        
+        // Load settings data to form
+        function loadSettingsToForm() {
+            document.getElementById('emailNotifications').checked = settingsData.emailNotifications;
+            document.getElementById('lowStockAlert').checked = settingsData.lowStockAlert;
+            document.getElementById('darkMode').checked = settingsData.darkMode;
+            document.getElementById('reportFormat').value = settingsData.reportFormat;
+            document.getElementById('autoBackup').checked = settingsData.autoBackup;
+            document.getElementById('schoolName').value = settingsData.schoolName;
+            document.getElementById('schoolAddress').value = settingsData.schoolAddress;
+            document.getElementById('schoolPhone').value = settingsData.schoolPhone;
+        }
+        
+        // Save settings from form
+        function saveSettingsFromForm() {
+            // Pastikan hanya admin yang bisa menyimpan pengaturan
+            if (currentUser.role !== 'Administrator') {
+                showNotification('Anda tidak memiliki izin untuk menyimpan pengaturan. Hanya Administrator yang dapat menyimpan pengaturan.', 'warning');
+                return;
+            }
+            
+            settingsData = {
+                emailNotifications: document.getElementById('emailNotifications').checked,
+                lowStockAlert: document.getElementById('lowStockAlert').checked,
+                darkMode: document.getElementById('darkMode').checked,
+                reportFormat: document.getElementById('reportFormat').value,
+                autoBackup: document.getElementById('autoBackup').checked,
+                schoolName: document.getElementById('schoolName').value,
+                schoolAddress: document.getElementById('schoolAddress').value,
+                schoolPhone: document.getElementById('schoolPhone').value
+            };
+            
+            showNotification('Pengaturan berhasil disimpan!', 'success');
+            saveDataToStorage();
+        }
+        
+        // Search functionality for inventory
+        document.getElementById('searchInventory').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#inventoryTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+        
+        // Save settings functionality
+        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+            saveSettingsFromForm();
+        });
+        
+        // Set default dates for borrow and return forms
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            const nextWeekFormatted = nextWeek.toISOString().split('T')[0];
+            
+            document.getElementById('borrowDate').value = today;
+            document.getElementById('returnDate').value = nextWeekFormatted;
+            document.getElementById('actualReturnDate').value = today;
+        }
+        
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            const totalItems = inventoryData.reduce((sum, item) => sum + item.quantity, 0);
+            const goodItems = inventoryData.filter(item => item.condition === 'Baik').reduce((sum, item) => sum + item.quantity, 0);
+            const borrowedItems = borrowData.filter(borrow => borrow.status === 'Dipinjam').length;
+            
+            // Calculate late returns
+            const today = new Date().toISOString().split('T')[0];
+            const lateItems = borrowData.filter(borrow => 
+                borrow.status === 'Dipinjam' && borrow.returnDate < today
+            ).length;
+            
+            document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('goodItems').textContent = goodItems;
+            document.getElementById('borrowedItems').textContent = borrowedItems;
+            document.getElementById('lateItems').textContent = lateItems;
+        }
+        
+        // Save data to localStorage
+        function saveDataToStorage() {
+            const appData = {
+                inventory: inventoryData,
+                users: usersData,
+                borrow: borrowData,
+                settings: settingsData
+            };
+            
+            localStorage.setItem('inventoryAppData', JSON.stringify(appData));
+        }
+        
+        // Load data from localStorage
+        function loadDataFromStorage() {
+            const storedData = localStorage.getItem('inventoryAppData');
+            
+            if (storedData) {
+                const appData = JSON.parse(storedData);
+                
+                if (appData.inventory) inventoryData = appData.inventory;
+                if (appData.users) usersData = appData.users;
+                if (appData.borrow) borrowData = appData.borrow;
+                if (appData.settings) {
+                    settingsData = appData.settings;
+                    loadSettingsToForm();
+                }
+                
+                renderInventoryTable();
+                renderUserList();
+                renderBorrowHistoryTable();
+                updateDashboardStats();
+            } else {
+                // Initialize with default data
+                loadSettingsToForm();
+                renderInventoryTable();
+                renderUserList();
+                renderBorrowHistoryTable();
+                updateDashboardStats();
+                saveDataToStorage();
+            }
+            
+            // Set default dates for forms
+            setDefaultDates();
+        }
+        
+        // Add event listeners for empty state buttons
+        document.getElementById('addFirstItemBtn')?.addEventListener('click', () => {
+            document.getElementById('addItemBtn').click();
+        });
+        
+        document.getElementById('addFirstUserBtn')?.addEventListener('click', () => {
+            document.getElementById('addUserBtn').click();
+        });
+        
+        // Add event listeners for print buttons
+        document.getElementById('printBorrowFormBtn').addEventListener('click', printBorrowForm);
+        document.getElementById('printReturnFormBtn').addEventListener('click', printReturnForm);
+        document.getElementById('printBorrowHistoryBtn').addEventListener('click', printBorrowHistory);
+        document.getElementById('printInventoryBtn').addEventListener('click', printInventory);
+        
+        // Initialize the application
+        function initApp() {
+            // Initially show login screen
+            loginScreen.style.display = 'flex';
+            appContainer.style.display = 'none';
+        }
+        
+        // Start the application
+        initApp();
+    </script>
+</body>
+</html>
